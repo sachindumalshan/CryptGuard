@@ -111,9 +111,19 @@ if __name__ == "__main__":
     # Create a GUI window
     root = Tk()
 
+    w = 500  # width
+    h = 670  # height
 
-    # Set the configuration of GUI window size
-    root.geometry("500x600")
+    # Get screen width and height
+    ws = root.winfo_screenwidth()
+    hs = root.winfo_screenheight()
+
+    # Calculate x and y coordinates
+    x = (ws / 2) - (w / 2)
+    y = (hs / 2) - (h / 2)
+
+    # set the dimensions of the screen and where it is placed
+    root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
     # set the name of tkinter GUI window
     root.title("CryptGuard")
@@ -123,10 +133,10 @@ if __name__ == "__main__":
     logo_card.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
 
     # CryptGuard Logo
-    cryptguard = Label(root, text="CryptGuard", fg='black', font=("Lato", 15, "bold"), justify="center")  # bg='red'
+    originalPhoto = PhotoImage(file=r"C:\Users\ASUS\Desktop\CryptGuard\key.png")
+    resized_photo = originalPhoto.subsample(15, 15)  # You can adjust the subsample factor as needed
+    cryptguard = Label(root, text="CryptGuard", image=resized_photo, compound="top", fg='black', font=("Lato", 15, "bold"), justify="center")
     cryptguard.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
-
-
 
     # Create a frame for the encrypt fields
     encryptCard = Frame(root, bd=1, relief="solid", padx=10, pady=10)
