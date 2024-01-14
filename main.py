@@ -10,7 +10,7 @@ def clearEncryptField():
 def clearDecryptField():
     postText_field.delete(0, END)
     decryptText_field.delete(0, END)
-
+    decryptKeyCode_field.delete(0, END)
 
 
 # Function to convert the normal text into encrypted text
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     root = Tk()
 
     # Set the configuration of GUI window size
-    root.geometry("500x550")
+    root.geometry("500x600")
 
     # set the name of tkinter GUI window
     root.title("CryptGuard")
@@ -120,6 +120,7 @@ if __name__ == "__main__":
     # CryptGuard Logo
     cryptguard = Label(root, text="CryptGuard", fg='black', font=("Lato", 15, "bold"), justify="center")  # bg='red'
     cryptguard.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
+
 
     # Create a frame for the encrypt fields
     encryptCard = Frame(root, bd=1, relief="solid", padx=10, pady=10)
@@ -159,7 +160,6 @@ if __name__ == "__main__":
     clearEncrypt.grid(row=3, column=2, pady=10, padx=10)
 
 
-
     # Create a frame for the decrypt fields
     decryptCard = Frame(root, bd=1, relief="solid", padx=10, pady=10)
     decryptCard.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
@@ -196,6 +196,16 @@ if __name__ == "__main__":
     # Create a submit button to clear the decrypt fields
     clearDecrypt = Button(decryptCard, height=1, width=8, text="Clear", fg="black", font=("Lato", 12, "bold"), command=clearDecryptField)
     clearDecrypt.grid(row=3, column=2, pady=10, padx=10)
+
+
+
+    # Create a frame ownership
+    ownership = Frame(root, padx=10, pady=10)
+    ownership.grid(row=4, column=0, columnspan=3)
+
+    # ownership with your name
+    ownershipFooter = Label(ownership, text="© 2024 Sachindu Malshan | All rights reserved.", fg='black', font=("Lato", 12), justify="center")
+    ownershipFooter.grid(row=1, column=0, columnspan=3)
 
     # Start the GUI
     root.mainloop()
