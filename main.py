@@ -61,8 +61,13 @@ def encryptTexttoCode():
 
 def decryptTexttoCode():
     decryptText_field.delete(0, END)
-    shiftPosition = random.randint(1, 26)
     decryptText = postText_field.get()
+    keycodeStr = decryptKeyCode_field.get()
+
+    numbers=[]
+    for number in keycodeStr:
+        numbers.insert(0,number)
+    keycode = int(''.join(numbers))
 
     unrecognizeLetterCount = 0
     for string in decryptText:
@@ -75,9 +80,9 @@ def decryptTexttoCode():
         decryptList = []
         for letter in decryptText:
             if (letter.isupper()):
-                updateNumericValue = (ord(letter) - 64) + shiftPosition
-                if (updateNumericValue > 26):
-                    updateNumericValue = updateNumericValue % 26
+                updateNumericValue = (ord(letter) - 64) - keycode
+                if (updateNumericValue < 1):
+                    updateNumericValue = updateNumericValue + 26
                     convertValue = updateNumericValue + 64
                     decryptList.append(chr(convertValue))
                 else:
@@ -85,9 +90,9 @@ def decryptTexttoCode():
                     decryptList.append(chr(convertValue))
 
             elif (letter.islower()):
-                updateNumericValue = (ord(letter) - 96) + shiftPosition
-                if (updateNumericValue > 26):
-                    updateNumericValue = updateNumericValue % 26
+                updateNumericValue = (ord(letter) - 96) - keycode
+                if (updateNumericValue < 1):
+                    updateNumericValue = updateNumericValue + 26
                     convertValue = updateNumericValue + 96
                     decryptList.append(chr(convertValue))
                 else:
@@ -97,15 +102,15 @@ def decryptTexttoCode():
                 code = ["Unrecognized Character was detected!"]
                 break
 
-        if (len(decryptList) != 0):
-            decryptList.append(str(shiftPosition))
         decryptText = ''.join(decryptList)
         decryptText_field.insert(0,decryptText)
+
 
 
 if __name__ == "__main__":
     # Create a GUI window
     root = Tk()
+
 
     # Set the configuration of GUI window size
     root.geometry("500x600")
@@ -120,6 +125,7 @@ if __name__ == "__main__":
     # CryptGuard Logo
     cryptguard = Label(root, text="CryptGuard", fg='black', font=("Lato", 15, "bold"), justify="center")  # bg='red'
     cryptguard.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
+
 
 
     # Create a frame for the encrypt fields
@@ -160,6 +166,7 @@ if __name__ == "__main__":
     clearEncrypt.grid(row=3, column=2, pady=10, padx=10)
 
 
+
     # Create a frame for the decrypt fields
     decryptCard = Frame(root, bd=1, relief="solid", padx=10, pady=10)
     decryptCard.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
@@ -181,6 +188,7 @@ if __name__ == "__main__":
 
     decryptKeyCode_field = Entry(decryptCard, font=("Lato", 12))
     decryptKeyCode_field.grid(row=2, column=1, padx=10, pady=10)
+
 
     # Decrypted Text
     decryptText = Label(decryptCard, text="Decrypted Text", fg='black', font=("Lato", 12, "bold"))
