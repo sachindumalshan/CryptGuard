@@ -108,7 +108,7 @@ if __name__ == "__main__":
     root = Tk()
 
     # Set the configuration of GUI window size
-    root.geometry("500x450")
+    root.geometry("500x550")
 
     # set the name of tkinter GUI window
     root.title("CryptGuard")
@@ -175,20 +175,27 @@ if __name__ == "__main__":
     postText_field = Entry(decryptCard, font=("Lato", 12))
     postText_field.grid(row=1, column=1, padx=10, pady=10)
 
+    # Key Code
+    decryptKeyCode = Label(decryptCard, text="Key Code", fg='black', font=("Lato", 12, "bold"))
+    decryptKeyCode.grid(row=2, column=0, padx=10, pady=10)
+
+    decryptKeyCode_field = Entry(decryptCard, font=("Lato", 12))
+    decryptKeyCode_field.grid(row=2, column=1, padx=10, pady=10)
+
     # Decrypted Text
     decryptText = Label(decryptCard, text="Decrypted Text", fg='black', font=("Lato", 12, "bold"))
-    decryptText.grid(row=2, column=0, padx=10, pady=10)
+    decryptText.grid(row=3, column=0, padx=10, pady=10)
 
     decryptText_field = Entry(decryptCard, font=("Lato", 12))
-    decryptText_field.grid(row=2, column=1, padx=10, pady=10)
+    decryptText_field.grid(row=3, column=1, padx=10, pady=10)
 
     # Create a submit button to decrypt the text
-    decryptButton = Button(decryptCard, height=1, width=8, text="Decrypt", fg="black", font=("Lato", 12, "bold"), command=decryptTexttoCode)
-    decryptButton.grid(row=1, column=2, pady=10, padx=10)
+    decryptButton = Button(decryptCard, height=4, width=8, text="Decrypt", fg="black", font=("Lato", 12, "bold"), command=decryptTexttoCode)
+    decryptButton.grid(row=1, rowspan=2,column=2, pady=10, padx=10)
 
     # Create a submit button to clear the decrypt fields
     clearDecrypt = Button(decryptCard, height=1, width=8, text="Clear", fg="black", font=("Lato", 12, "bold"), command=clearDecryptField)
-    clearDecrypt.grid(row=2, column=2, pady=10, padx=10)
+    clearDecrypt.grid(row=3, column=2, pady=10, padx=10)
 
     # Start the GUI
     root.mainloop()
