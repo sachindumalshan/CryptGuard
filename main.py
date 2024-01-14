@@ -5,6 +5,7 @@ from tkinter import *
 def clearEncryptField():
     preText_field.delete(0, END)
     encryptText_field.delete(0, END)
+    encryptKeyCode_field.delete(0, END)
 
 def clearDecryptField():
     postText_field.delete(0, END)
@@ -51,10 +52,12 @@ def encryptTexttoCode():
                 code = ["Unrecognized Character was detected!"]
                 break
 
-        if (len(encryptList) != 0):
-            encryptList.append(str(shiftPosition))
         encryptText = ''.join(encryptList)
         encryptText_field.insert(0,encryptText)
+
+        if (len(encryptList) != 0):
+            encryptKeyCode_field.delete(0, END)
+            encryptKeyCode_field.insert(0, shiftPosition)
 
 def decryptTexttoCode():
     decryptText_field.delete(0, END)
@@ -140,13 +143,20 @@ if __name__ == "__main__":
     encryptText_field = Entry(encryptCard, font=("Lato", 12))
     encryptText_field.grid(row=2, column=1, padx=10, pady=10)
 
+    # Key Code
+    encryptKeyCode = Label(encryptCard, text="Key Code", fg='black', font=("Lato", 12, "bold"))
+    encryptKeyCode.grid(row=3, column=0, padx=10, pady=10)
+
+    encryptKeyCode_field = Entry(encryptCard, font=("Lato", 12))
+    encryptKeyCode_field.grid(row=3, column=1, padx=10, pady=10)
+
     # Create a submit button to encrypt the text
-    encryptButton = Button(encryptCard, height=1, width=8, text="Encrypt", fg="black", font=("Lato", 12, "bold"), command=encryptTexttoCode)
-    encryptButton.grid(row=1, column=2, pady=10, padx=10)
+    encryptButton = Button(encryptCard, height=4, width=8, text="Encrypt", fg="black", font=("Lato", 12, "bold"), command=encryptTexttoCode)
+    encryptButton.grid(row=1, rowspan=2, column=2, pady=10, padx=10)
 
     # Create a submit button to clear the encrypt fields
     clearEncrypt = Button(encryptCard, height=1, width=8, text="Clear", fg="black", font=("Lato", 12, "bold"), command=clearEncryptField)
-    clearEncrypt.grid(row=2, column=2, pady=10, padx=10)
+    clearEncrypt.grid(row=3, column=2, pady=10, padx=10)
 
 
 
