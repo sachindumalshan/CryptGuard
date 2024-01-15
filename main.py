@@ -12,10 +12,10 @@ def clearDecryptField():
     decryptText_field.delete(0, END)
     decryptKeyCode_field.delete(0, END)
 
-
 # Function to convert the normal text into encrypted text
 def encryptTexttoCode():
     encryptText_field.delete(0, END)
+    encryptKeyCode_field.delete(0, END)
     shiftPosition = random.randint(1, 26)
     encryptText = preText_field.get()
 
@@ -24,14 +24,16 @@ def encryptTexttoCode():
         if not string.isalpha():
             unrecognizeLetterCount = unrecognizeLetterCount + 1
 
-    if (unrecognizeLetterCount != 0):
-        print("Unrecognized Character was Detected!")
+    if not 0 == unrecognizeLetterCount:
+        encryptText_field.insert(0, "Character Error!")
+        encryptKeyCode_field.insert(0, "Character Error!")
+
     else:
         encryptList = []
         for letter in encryptText:
-            if (letter.isupper()):
+            if letter.isupper():
                 updateNumericValue = (ord(letter) - 64) + shiftPosition
-                if (updateNumericValue > 26):
+                if updateNumericValue > 26:
                     updateNumericValue = updateNumericValue % 26
                     convertValue = updateNumericValue + 64
                     encryptList.append(chr(convertValue))
@@ -39,49 +41,50 @@ def encryptTexttoCode():
                     convertValue = updateNumericValue + 64
                     encryptList.append(chr(convertValue))
 
-            elif (letter.islower()):
+            elif letter.islower():
                 updateNumericValue = (ord(letter) - 96) + shiftPosition
-                if (updateNumericValue > 26):
+                if updateNumericValue > 26:
                     updateNumericValue = updateNumericValue % 26
                     convertValue = updateNumericValue + 96
                     encryptList.append(chr(convertValue))
                 else:
                     convertValue = updateNumericValue + 96
                     encryptList.append(chr(convertValue))
-            else:
-                code = ["Unrecognized Character was detected!"]
-                break
 
         encryptText = ''.join(encryptList)
-        encryptText_field.insert(0,encryptText)
+        encryptText_field.insert(0, encryptText)
 
-        if (len(encryptList) != 0):
+        if len(encryptList) != 0:
             encryptKeyCode_field.delete(0, END)
-            encryptKeyCode_field.insert(0, shiftPosition)
+            encryptKeyCode_field.insert(0, str(shiftPosition))
 
 def decryptTexttoCode():
     decryptText_field.delete(0, END)
     decryptText = postText_field.get()
     keycodeStr = decryptKeyCode_field.get()
 
-    numbers=[]
+    numbers = []
     for number in keycodeStr:
-        numbers.insert(0,number)
-    keycode = int(''.join(numbers))
+        numbers.insert(0, number)
+
+    if len(numbers) != 0:
+        keycode = int(''.join(numbers))
+    else:
+        keycode = 0
 
     unrecognizeLetterCount = 0
     for string in decryptText:
         if not string.isalpha():
             unrecognizeLetterCount = unrecognizeLetterCount + 1
 
-    if (unrecognizeLetterCount != 0):
-        print("Unrecognized Character was Detected!")
+    if unrecognizeLetterCount != 0:
+        decryptText_field.insert(0, "Character Error!")
     else:
         decryptList = []
         for letter in decryptText:
-            if (letter.isupper()):
+            if letter.isupper():
                 updateNumericValue = (ord(letter) - 64) - keycode
-                if (updateNumericValue < 1):
+                if updateNumericValue < 1:
                     updateNumericValue = updateNumericValue + 26
                     convertValue = updateNumericValue + 64
                     decryptList.append(chr(convertValue))
@@ -89,23 +92,18 @@ def decryptTexttoCode():
                     convertValue = updateNumericValue + 64
                     decryptList.append(chr(convertValue))
 
-            elif (letter.islower()):
+            elif letter.islower():
                 updateNumericValue = (ord(letter) - 96) - keycode
-                if (updateNumericValue < 1):
+                if updateNumericValue < 1:
                     updateNumericValue = updateNumericValue + 26
                     convertValue = updateNumericValue + 96
                     decryptList.append(chr(convertValue))
                 else:
                     convertValue = updateNumericValue + 96
                     decryptList.append(chr(convertValue))
-            else:
-                code = ["Unrecognized Character was detected!"]
-                break
 
         decryptText = ''.join(decryptList)
-        decryptText_field.insert(0,decryptText)
-
-
+        decryptText_field.insert(0, decryptText)
 
 if __name__ == "__main__":
     # Create a GUI window
@@ -158,6 +156,7 @@ if __name__ == "__main__":
     encryptText.grid(row=2, column=0, padx=10, pady=10)
 
     encryptText_field = Entry(encryptCard, font=("Lato", 12))
+    encryptText_field.insert(0, 'Automatically Generated')
     encryptText_field.grid(row=2, column=1, padx=10, pady=10)
 
     # Key Code
@@ -165,6 +164,7 @@ if __name__ == "__main__":
     encryptKeyCode.grid(row=3, column=0, padx=10, pady=10)
 
     encryptKeyCode_field = Entry(encryptCard, font=("Lato", 12))
+    encryptKeyCode_field.insert(0, 'Automatically Generated')
     encryptKeyCode_field.grid(row=3, column=1, padx=10, pady=10)
 
     # Create a submit button to encrypt the text
@@ -174,8 +174,6 @@ if __name__ == "__main__":
     # Create a submit button to clear the encrypt fields
     clearEncrypt = Button(encryptCard, height=1, width=8, text="Clear", fg="black", font=("Lato", 12, "bold"), command=clearEncryptField)
     clearEncrypt.grid(row=3, column=2, pady=10, padx=10)
-
-
 
     # Create a frame for the decrypt fields
     decryptCard = Frame(root, bd=1, relief="solid", padx=10, pady=10)
@@ -199,23 +197,21 @@ if __name__ == "__main__":
     decryptKeyCode_field = Entry(decryptCard, font=("Lato", 12))
     decryptKeyCode_field.grid(row=2, column=1, padx=10, pady=10)
 
-
     # Decrypted Text
     decryptText = Label(decryptCard, text="Decrypted Text", fg='black', font=("Lato", 12, "bold"))
     decryptText.grid(row=3, column=0, padx=10, pady=10)
 
     decryptText_field = Entry(decryptCard, font=("Lato", 12))
+    decryptText_field.insert(0, "Automatically Generated")
     decryptText_field.grid(row=3, column=1, padx=10, pady=10)
 
     # Create a submit button to decrypt the text
     decryptButton = Button(decryptCard, height=4, width=8, text="Decrypt", fg="black", font=("Lato", 12, "bold"), command=decryptTexttoCode)
-    decryptButton.grid(row=1, rowspan=2,column=2, pady=10, padx=10)
+    decryptButton.grid(row=1, rowspan=2, column=2, pady=10, padx=10)
 
     # Create a submit button to clear the decrypt fields
     clearDecrypt = Button(decryptCard, height=1, width=8, text="Clear", fg="black", font=("Lato", 12, "bold"), command=clearDecryptField)
     clearDecrypt.grid(row=3, column=2, pady=10, padx=10)
-
-
 
     # Create a frame ownership
     ownership = Frame(root, padx=10, pady=10)
